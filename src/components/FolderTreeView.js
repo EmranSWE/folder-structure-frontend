@@ -6,7 +6,6 @@ import RenderFolder from './RenderFolder';
 
 const FolderTreeView = () => { 
   const [folders, setFolders] = useState([]);
-   console.log(folders)
   // Fetch folders data from backend API on component mount
   useEffect(() => {
     const fetchData = async () => {
@@ -18,8 +17,9 @@ const FolderTreeView = () => {
   return (
     <div>
       <h1>Folder Structure</h1>
-      
-      {folders.map((folder) => <RenderFolder key={folder._id} folder={folder}> </RenderFolder>)}
+      {
+      folders.map((folder) => <RenderFolder key={folder._id} folder={folder}> </RenderFolder>)
+      }
     </div>
   );
 };

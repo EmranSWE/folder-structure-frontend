@@ -1,4 +1,17 @@
 .li{
     color: blueviolet;
     list-style-type:none;
+    display: flex;
+}
+.div1{
+    display: flex;
+}
+.design{
+    color: aqua;
+    width: 170px;
+    border: 2px solid black;
+    margin-left: 20px;
+}
+.displayy{
+    display: hidden;
 }
