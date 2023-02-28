@@ -7,67 +7,54 @@ const RenderFolder = ({folder}) => {
     const [folders, setFolders] = useState([]);
     const [newFolderName, setNewFolderName] = useState('');
     const [newAdd, setNewAdd] = useState('');
-    console.log(newAdd)
+    const [isDelete, setIsDelete] = useState('');
+  
      // Function to create a new folder
   const handleCreateFolder = async (parentId) => {
     try {
-  
-       
           const folder = { name: newFolderName, parent: parentId };
           const result = await axios.post('http://localhost:5000/folders', folder);
           setNewAdd(result.data);
-          console.log(result.data)
-        
+          if(result.data.insertedId){
+            setNewAdd('');
+          }
         }
-      
       catch (error) {
         console.log(error);
-      }
-     
-    
+      }   
   };
 
   // Function to delete a folder
   const handleDeleteFolder = async (folderId) => {
-    console.log(folderId)
     try {
       const result = await axios.delete(`http://localhost:5000/folders/${folderId}`);
       setFolders(result.data);
+      if(result.data.deletedCount){
+        setIsDelete('')
+      }
     } catch (error) {
       console.log(error);
     }
   };
-
-   // Function to render child folders
-  //  const renderChildFolders = () => {
-  //   if (folder && folder> 0) {
-  //     console.log(folder)
-  //     return (
-  //       <ul>
-  //         {folder.parent.map(childFolder => (
-  //           <RenderFolder key={childFolder._id} folder={childFolder} />
-  //         ))}
-  //       </ul>
-  //     );
-  //   }
-  //   return null;
-  // }
-
+  const handleCancelFolder = async (folderId) => {
+   return setIsDelete('')
+  };
+  const handleCancelCreate = async (folderId) => {
+    return  setNewAdd('');
+   };
 return (   
-        <div style={{display:'flex'}}>
-        <h3>{folder.name}</h3>
-        <div className='div1'>
-        { newAdd ? <div className='design'><p>{`Please add Folder name `}</p> <input type='text' value={newFolderName} onChange={(e) => setNewFolderName(e.target.value)} /> <button onClick={() => handleCreateFolder(folder._id)}>New</button></div> : <div className='displayy'></div>}
-        <button onClick={() => setNewAdd(folder._id)}>New</button>
-        <button className='btn' onClick={() => handleDeleteFolder(folder._id)}>Delete</button>
-        </div>
-        
-        
-        
+        <div style={{display:'flex', margin:'20px'}}>
+        {folder.name}
+        <div>
+        <button className='btn' onClick={() => setIsDelete(folder._id)}>X</button>
+        <button onClick={() => setNewAdd(folder._id)}>+ New</button>
        
-        
-      </div>
-      
+        { isDelete ? <div className='design'><p>{`Do you want To Delete:`}</p> <button className='btn' onClick={() => handleDeleteFolder(folder._id)}>Delete</button> <button onClick={() => handleCancelFolder(folder._id)}>Cancel</button> </div> : <div className='display'></div>}
+
+
+        { newAdd ? <div className='design'><p>{`Typed folder name:  ${newFolderName}`}</p> <input type='text' required placeholder='Folder Name' value={newFolderName} onChange={(e) => setNewFolderName(e.target.value)} /> <button onClick={() => handleCreateFolder(folder._id)}>Create</button> <button onClick={() => handleCancelCreate(folder._id)}>Cancel</button></div> : <div className='display'></div>}
+        </div>   
+      </div>  
     );
 };
 
