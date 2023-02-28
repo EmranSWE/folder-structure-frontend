@@ -9,7 +9,7 @@ const FolderTreeView = () => {
   // Fetch folders data from backend API on component mount
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios('http://localhost:5000/folders');
+      const result = await axios('https://server-24fh.onrender.com/folders');
       setFolders(result.data);
     };
     fetchData();
